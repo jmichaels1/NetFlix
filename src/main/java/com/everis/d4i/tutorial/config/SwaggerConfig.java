@@ -4,6 +4,8 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
@@ -33,7 +35,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig  extends WebMvcConfigurationSupport {
 
 	@Bean
 	public Docket api() {
@@ -45,5 +47,11 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder().title("Netflix").description("TVShow Api")
 				.termsOfServiceUrl("https://www.everis.com").license("everis").licenseUrl("https://www.everis.com")
 				.version("1.0").build();
+	}
+	
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 }

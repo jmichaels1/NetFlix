@@ -29,8 +29,8 @@ public class ChapterControllerImpl implements ChapterController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<List<ChapterRest>> getChaptersByTvShowIdAndSeasonNumber(@PathVariable Long tvShowId,
-			@PathVariable short seasonNumber) throws NetflixException {
+	public NetflixResponse<List<ChapterRest>> getChaptersByTvShowIdAndSeasonNumber(@PathVariable final Long tvShowId,
+			@PathVariable final short seasonNumber) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				chapterService.getChaptersByTvShowIdAndSeasonNumber(tvShowId, seasonNumber));
 	}
@@ -38,10 +38,10 @@ public class ChapterControllerImpl implements ChapterController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_NUMBER, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<ChapterRest> getChapterByTvShowIdAndSeasonNumberAndChapterNumber(@PathVariable Long tvShowId,
-			@PathVariable short seasonNumber, @PathVariable short number) throws NetflixException {
+	public NetflixResponse<ChapterRest> getChapterByTvShowIdAndSeasonNumberAndChapterNumber(
+			@PathVariable final Long tvShowId, @PathVariable final short seasonNumber, @PathVariable final short number)
+			throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				chapterService.getChapterByTvShowIdAndSeasonNumberAndChapterNumber(tvShowId, seasonNumber, number));
 	}
-
 }

@@ -16,28 +16,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SEASONS")
+@Table(name = "SEASON")
 public class Season implements Serializable {
 
 	private static final long serialVersionUID = 180802329613616000L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "NUMBER")
 	private short number;
-
-	@Column(name = "NAME")
+	
 	private String name;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TV_SHOW_ID", nullable = false)
+	
 	private TvShow tvShow;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "season")
+	
 	private List<Chapter> chapters;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -45,7 +40,8 @@ public class Season implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	@Column(name = "NUMBER")
 	public short getNumber() {
 		return number;
 	}
@@ -53,7 +49,8 @@ public class Season implements Serializable {
 	public void setNumber(short number) {
 		this.number = number;
 	}
-
+	
+	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -61,7 +58,9 @@ public class Season implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TV_SHOW_ID", nullable = false)
 	public TvShow getTvShow() {
 		return tvShow;
 	}
@@ -69,7 +68,8 @@ public class Season implements Serializable {
 	public void setTvShow(TvShow tvShow) {
 		this.tvShow = tvShow;
 	}
-
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "season")
 	public List<Chapter> getChapters() {
 		return chapters;
 	}
@@ -77,5 +77,4 @@ public class Season implements Serializable {
 	public void setChapters(List<Chapter> chapters) {
 		this.chapters = chapters;
 	}
-
 }

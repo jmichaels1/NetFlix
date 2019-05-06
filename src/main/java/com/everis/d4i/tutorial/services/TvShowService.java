@@ -10,5 +10,7 @@ public interface TvShowService {
 	List<TvShowRest> getTvShowsByCategory(Long categoryId) throws NetflixException;
 
 	TvShowRest getTvShowById(Long id) throws NetflixException;
+	
+	TvShowRest createTvShow(TvShowRest tvShowRest) throws NetflixException;
 
 }

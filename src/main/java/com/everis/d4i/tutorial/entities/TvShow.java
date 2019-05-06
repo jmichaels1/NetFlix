@@ -12,45 +12,41 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TV_SHOWS")
+@Table(name = "TV_SHOW")
 public class TvShow implements Serializable {
 
 	private static final long serialVersionUID = 4916713904971425156L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "SHORT_DESC", nullable = true)
 	private String shortDescription;
 
-	@Column(name = "LONG_DESC", nullable = true)
 	private String longDescription;
 
-	@Column(name = "YEAR")
 	private Year year;
 
-	@Column(name = "RECOMMENDED_AGE")
 	private byte recommendedAge;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CATEGORY_ID", nullable = false)
-	private Category category;
-
-	@Column(name = "ADVERTISING", nullable = true)
 	private String advertising;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
 	private List<Season> seasons;
 
+	private List<Category> categoryList;
+
+	private List<Prize> prizeList;
+
+	private Boolean isActive;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +55,7 @@ public class TvShow implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -67,6 +64,7 @@ public class TvShow implements Serializable {
 		this.name = name;
 	}
 
+	@Column(name = "SHORT_DESC", nullable = true)
 	public String getShortDescription() {
 		return shortDescription;
 	}
@@ -75,6 +73,7 @@ public class TvShow implements Serializable {
 		this.shortDescription = shortDescription;
 	}
 
+	@Column(name = "LONG_DESC", nullable = true)
 	public String getLongDescription() {
 		return longDescription;
 	}
@@ -83,6 +82,7 @@ public class TvShow implements Serializable {
 		this.longDescription = longDescription;
 	}
 
+	@Column(name = "YEAR")
 	public Year getYear() {
 		return year;
 	}
@@ -91,6 +91,7 @@ public class TvShow implements Serializable {
 		this.year = year;
 	}
 
+	@Column(name = "RECOMMENDED_AGE")
 	public byte getRecommendedAge() {
 		return recommendedAge;
 	}
@@ -99,14 +100,7 @@ public class TvShow implements Serializable {
 		this.recommendedAge = recommendedAge;
 	}
 
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
+	@Column(name = "ADVERTISING", nullable = true)
 	public String getAdvertising() {
 		return advertising;
 	}
@@ -115,6 +109,7 @@ public class TvShow implements Serializable {
 		this.advertising = advertising;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
 	public List<Season> getSeasons() {
 		return seasons;
 	}
@@ -123,4 +118,23 @@ public class TvShow implements Serializable {
 		this.seasons = seasons;
 	}
 
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "categories_tv_shows", joinColumns = { @JoinColumn(name = "tv_shows_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "categories_id") })
+	public List<Category> getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(List<Category> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
+	public List<Prize> getPrizeList() {
+		return prizeList;
+	}
+
+	public void setPrizeList(List<Prize> prizeList) {
+		this.prizeList = prizeList;
+	}
 }

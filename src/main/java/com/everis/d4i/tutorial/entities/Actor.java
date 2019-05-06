@@ -12,17 +12,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CATEGORY")
-public class Category implements Serializable {
+@Table(name = "ACTOR")
+public class Actor implements Serializable {
 
-	private static final long serialVersionUID = 180802329613616000L;
-
+	private static final long serialVersionUID = 2455208515714808003L;
+	
 	private Long id;
-
+	
 	private String name;
-
-	private List<TvShow> tvShows;
-
+	
+	private String lastName;
+	
+	private List<Chapter> chapterList;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
@@ -32,8 +34,8 @@ public class Category implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	@Column(name = "NAME", unique = true)
+	
+	@Column(name = "NAME", nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -42,12 +44,21 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 	
-	@ManyToMany(mappedBy = "categoryList")
-	public List<TvShow> getTvShows() {
-		return tvShows;
+	@Column(name = "LASTNAME", nullable = false)
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setTvShows(List<TvShow> tvShows) {
-		this.tvShows = tvShows;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	@ManyToMany(mappedBy = "actorList")
+	public List<Chapter> getChapterList() {
+		return chapterList;
+	}
+
+	public void setChapterList(List<Chapter> chapterList) {
+		this.chapterList = chapterList;
 	}
 }
