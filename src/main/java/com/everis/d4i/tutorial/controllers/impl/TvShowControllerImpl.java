@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,6 @@ public class TvShowControllerImpl implements TvShowController {
 	@Autowired
 	private TvShowService tvShowService;
 
-	
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public NetflixResponse<List<TvShowRest>> getTvShowsByCategory(@RequestParam final Long categoryId)
@@ -41,7 +41,6 @@ public class TvShowControllerImpl implements TvShowController {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				tvShowService.getTvShowsByCategory(categoryId));
 	}
-
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,9 +52,19 @@ public class TvShowControllerImpl implements TvShowController {
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public NetflixResponse<TvShowRest> createTvShow(
-			@ApiParam(value = RestConstants.RESOURCE_TV_SHOW, required = true) @Valid @RequestBody final TvShowRest tvShowRest
-			) throws NetflixException {
+			@ApiParam(value = RestConstants.RESOURCE_TV_SHOW, required = true) @Valid @RequestBody final TvShowRest tvShowRest)
+			throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				tvShowService.createTvShow(tvShowRest));
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(value = RestConstants.RESOURCE_TV_SHOW + "/{" + RestConstants.PARAMETER_TVSHOWID + "}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public NetflixResponse<TvShowRest> updateTvShow(
+			@ApiParam(value = RestConstants.PARAMETER_TVSHOWID, required = true) @PathVariable(RestConstants.PARAMETER_TVSHOWID) final Long tvShowId, 
+			@ApiParam(value = RestConstants.PARAMETER_TVSHOW, required = true) @Valid @RequestBody final TvShowRest tvShow)
+			throws NetflixException {
+		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
+				tvShowService.updateTvShow(tvShowId, tvShow));
 	}
 }

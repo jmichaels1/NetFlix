@@ -1,6 +1,7 @@
 package com.everis.d4i.tutorial.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -24,13 +25,11 @@ public class TvShowServiceImpl implements TvShowService {
 
 	private ModelMapper modelMapper = new ModelMapper();
 
-	@Override
 	public List<TvShowRest> getTvShowsByCategory(final Long categoryId) throws NetflixException {
 		return tvShowRepository.findByCategoryList_id(categoryId).stream()
 				.map(tvShow -> modelMapper.map(tvShow, TvShowRest.class)).collect(Collectors.toList());
 	}
 
-	@Override
 	public TvShowRest getTvShowById(final Long id) throws NetflixException {
 		try {
 			return modelMapper.map(tvShowRepository.getOne(id), TvShowRest.class);
@@ -39,12 +38,11 @@ public class TvShowServiceImpl implements TvShowService {
 		}
 	}
 
-	@Override
 	public TvShowRest createTvShow(final TvShowRest tvShowRest) throws NetflixException {
 		return saveTvShow(checkAndMapTvShow(tvShowRest));
 	}
 
-	private TvShow checkAndMapTvShow(final TvShowRest tvShowRest) { 
+	private TvShow checkAndMapTvShow(final TvShowRest tvShowRest) {
 		checkTvShow(tvShowRest.getName());
 		return mapTvShow(tvShowRest);
 	}
@@ -55,7 +53,7 @@ public class TvShowServiceImpl implements TvShowService {
 
 	private void checkTvShow(String tvShowName) {
 		if (tvShowRepository.findByName(tvShowName) != null) {
-			//LANZAR EXCEPTION DUPLICATE
+			// LANZAR EXCEPTION DUPLICATE
 		}
 	}
 
@@ -67,4 +65,26 @@ public class TvShowServiceImpl implements TvShowService {
 		}
 		return modelMapper.map(tvShow, TvShowRest.class);
 	}
+
+	public TvShowRest updateTvShow(final Long tvShowId, final TvShowRest tvShow) throws NetflixException {
+		checkTvShowIds(tvShowId, tvShow);
+		checkAndReturnTvShow(tvShow);
+		
+		return null;
+	}
+
+	private void checkTvShowIds(final Long tvShowId, final TvShowRest tvShow) {
+		if (!tvShowId.equals(tvShow.getId())) {
+			// TODO lanzar excepción sobre los Id's (badRequest?)
+		}
+	}
+
+	private TvShow checkAndReturnTvShow(final TvShowRest tvShow) {
+		final TvShow TvShowInDb = tvShowRepository.findById(tvShow.getId()).get();
+		if (TvShowInDb == null) {
+			// TODO lanzar excepción que no existe el objecto en db
+		}
+		return TvShowInDb;
+	}
+
 }

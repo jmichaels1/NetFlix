@@ -27,10 +27,9 @@ public class ActorRestControllerImpl implements ActorRestController {
 				actorService.getActor(actorId));
 	}
 
-	public NetflixResponse<List<ActorRest>> retrieveActorsByChapterAndSeason(final Long tvShowId, final Long seasonId,
+	public NetflixResponse<List<ActorRest>> retrieveActorsByTvShowAndSeasonAndChapter(final Long tvShowId, final Long seasonId,
 			final Long chapterId) throws NetflixException {
-		// TODO Auto-generated method stub
-		return null;
+		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
+				actorService.getActorsByTvShowAndSeasonAndChapter(tvShowId, seasonId, chapterId));
 	}
-
 }

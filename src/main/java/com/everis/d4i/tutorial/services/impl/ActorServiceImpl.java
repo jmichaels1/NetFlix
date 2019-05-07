@@ -19,7 +19,7 @@ public class ActorServiceImpl implements ActorService {
 	@Autowired
 	private ActorRepository actorRepository;
 
-	private ModelMapper modelMapper =  new ModelMapper();
+	private ModelMapper modelMapper = new ModelMapper();
 
 	public List<ActorRest> getAllActors() throws NetflixException {
 		final List<Actor> actorsList = actorRepository.findAll();
@@ -36,9 +36,16 @@ public class ActorServiceImpl implements ActorService {
 	private Actor checkAndReturnActor(final Long actorId) {
 		Actor actor = actorRepository.findById(actorId).get();
 		if (actor == null) {
-			//TODO lanzar excepxión NOT FOUND
+			// TODO lanzar excepxión NOT FOUND
 		}
 		return actor;
 	}
-	
+
+	public List<ActorRest> getActorsByTvShowAndSeasonAndChapter(final Long tvShowId, final Long seasonId, final Long chapterId)
+			throws NetflixException {
+		final List<Actor> actorsList = actorRepository.findByTvShow_IdAndSeason_IdAndChapter_Id(tvShowId, seasonId, chapterId);
+		return !CollectionUtils.isEmpty(actorsList)
+				? actorsList.stream().map(actor -> modelMapper.map(actor, ActorRest.class)).collect(Collectors.toList())
+				: new ArrayList<>();
+	}
 }

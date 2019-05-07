@@ -12,5 +12,6 @@ public interface ActorRestController {
 
 	NetflixResponse<ActorRest> retrieveActor(Long actorId) throws NetflixException;;
 
-	NetflixResponse<List<ActorRest>> retrieveActorsByChapterAndSeason(Long tvShowId, Long seasonId, Long chapterId) throws NetflixException;;
+	NetflixResponse<List<ActorRest>> retrieveActorsByTvShowAndSeasonAndChapter(Long tvShowId, Long seasonId, Long chapterId) throws NetflixException;
+	
 }
